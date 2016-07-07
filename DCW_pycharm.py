@@ -1,30 +1,30 @@
 
 # coding: utf-8
 
-# In[80]:
+# In[74]:
 
 import numpy as np
 from sklearn.metrics import jaccard_similarity_score
 
 
-# In[81]:
+# In[75]:
 
 from sklearn.neighbors import KNeighborsClassifier
 import warnings
 warnings.filterwarnings("ignore")
 
 
-# In[82]:
+# In[76]:
 
 import pandas as pd
 
 
-# In[83]:
+# In[77]:
 
 df = pd.read_csv("data/comoda_data.csv")
 
 
-# In[84]:
+# In[78]:
 
 df = df.replace(-1.0, np.nan)
 df = df.dropna(how="any")
@@ -32,7 +32,7 @@ df = df.dropna(how="any")
 
 # ## Clean Data Here
 
-# In[85]:
+# In[79]:
 
 ## CONSTANTS ASSUMPTION
 sigma = 1
@@ -47,7 +47,7 @@ df = df.reset_index(drop=True)
 #df
 
 
-# In[86]:
+# In[80]:
 
 class neighbors:
     def __init__(self, X, y):
@@ -75,7 +75,7 @@ class neighbors:
         return self.good_neighbors
 
 
-# In[87]:
+# In[81]:
 
 class similarity_class:
     def __init__(self):
@@ -84,7 +84,7 @@ class similarity_class:
         return jaccard_similarity_score(x,y)
 
 
-# In[88]:
+# In[82]:
 
 class neighborhood_contribution:
     def __init__(self):
@@ -135,7 +135,7 @@ class neighborhood_contribution:
         return average_item_rating
 
 
-# In[89]:
+# In[83]:
 
 def numerator(neighborhood_contribution_rating, similarity_of_neighbors):
     numerator_sum=0
@@ -146,7 +146,7 @@ def numerator(neighborhood_contribution_rating, similarity_of_neighbors):
     return numerator_sum
 
 
-# In[90]:
+# In[84]:
 
 def predict_rating(user,itemID):
     similarity_function = similarity_class()
@@ -173,7 +173,7 @@ def predict_rating(user,itemID):
     return final_rating
 
 
-# In[91]:
+# In[85]:
 
 # if __name__ == "main":
 #     userId = 20
@@ -182,43 +182,43 @@ def predict_rating(user,itemID):
 #     print(rating)
 
 
-# In[92]:
+# In[86]:
 
 predict_rating(df.iloc[37], 47)
 #df.iloc[5]"
 
 
-# In[93]:
+# In[87]:
 
 #df[df.itemID == 47]
 
 
-# In[94]:
+# In[88]:
 
 #df.iloc[37]
 
 
-# In[95]:
+# In[89]:
 
 from sklearn.metrics import mean_squared_error
 
 
-# In[96]:
+# In[90]:
 
 #y_true = [df.iloc[i].rating for i in range(700,800)]
 
 
-# In[97]:
+# In[91]:
 
 #y_pred = [predict_rating(df.iloc[i], df.iloc[i].itemID) for i in range(700,800)]
 
 
-# In[98]:
+# In[92]:
 
 #y_pred
 
 
-# In[99]:
+# In[93]:
 
 #mean_squared_error(y_true, y_pred)
 
@@ -230,27 +230,27 @@ from sklearn.metrics import mean_squared_error
 
 
 
-# In[100]:
+# In[94]:
 
 len(df.rating.unique())
 
 
-# In[101]:
+# In[95]:
 
 columns = df.columns
 
 
-# In[102]:
+# In[96]:
 
 columns = columns[2:-1]
 
 
-# In[103]:
+# In[97]:
 
 columns
 
 
-# In[104]:
+# In[98]:
 
 #from collections import defaultdict
 # size_of_feature = defaultdict(dict)
@@ -260,27 +260,27 @@ columns
     
 
 
-# In[105]:
+# In[99]:
 
 #size_of_feature
 
 
-# In[106]:
+# In[100]:
 
 #size_of_feature['actor1']
 
 
-# In[107]:
+# In[101]:
 
 df.actor1.max()
 
 
-# In[108]:
+# In[102]:
 
 df.actor1.describe()
 
 
-# In[109]:
+# In[103]:
 
 # #from collections import defaultdict
 # feature_dict = defaultdict(dict)
@@ -291,33 +291,33 @@ df.actor1.describe()
 #             #print(k,name)
 
 
-# In[110]:
+# In[104]:
 
 #feature_dict
 
 
-# In[111]:
+# In[105]:
 
 #df[df.columns[2:]].corr(method='kendall', min_periods=1)
 
 
-# In[112]:
+# In[106]:
 
 df.columns
 
 
-# In[113]:
+# In[107]:
 
-df_new = df.drop(['director','genre1', 'genre2',
+df_new = df.drop(['city','physical','director','movieCountry','movieLanguage','movieYear','genre1', 'genre2',
        'genre3', 'actor1', 'actor2', 'actor3','budget'], axis=1,)
 
 
-# In[114]:
+# In[108]:
 
 #df_new.describe()
 
 
-# In[115]:
+# In[109]:
 
 from collections import defaultdict
 new_size_of_feature = defaultdict(dict)
@@ -326,60 +326,59 @@ for column in df_new.columns:
     new_size_of_feature[column]['names'] = df_new[column].unique()
 
 
-# In[116]:
+# In[110]:
 
 sum_of_features = 0
 for k,v in new_size_of_feature.items():
     sum_of_features += v['length']
 
 
-# In[117]:
+# In[111]:
 
 sum_of_features
 
 
-# In[118]:
+# In[112]:
 
 df_new.columns
 
 
-# In[119]:
+# In[113]:
 
 df_age = pd.get_dummies(df.age, prefix='age')
 
 
-# In[120]:
+# In[114]:
 
 #df_age.head()
 df_new.head()
 
 
-# In[121]:
+# In[115]:
 
 for column in df_new.columns[2:-1]:
     df_col = pd.get_dummies(df_new[column], prefix=column)
     df_new = pd.concat([df_new, df_col], axis=1)
 
 
-# In[122]:
+# In[117]:
 
-df_new = df_new.drop(['age', 'sex', 'city', 'country', 'time', 'daytype',
+df_new = df_new.drop(['age', 'sex', 'country', 'time', 'daytype',
        'season', 'location', 'weather', 'social', 'endEmo', 'dominantEmo',
-       'mood', 'physical', 'decision', 'interaction', 'movieCountry',
-       'movieLanguage', 'movieYear'], axis=1)
+       'mood', 'decision', 'interaction'], axis=1)
 
 
-# In[123]:
+# In[118]:
 
 df_new.shape
 
 
-# In[124]:
+# In[119]:
 
 df_new.head()
 
 
-# In[125]:
+# In[120]:
 
 columns = df_new.columns.tolist()
 columns.remove("rating")
@@ -387,12 +386,12 @@ columns.append("rating")
 df_new = df_new[columns]
 
 
-# In[126]:
+# In[121]:
 
 df_new.head()
 
 
-# In[127]:
+# In[ ]:
 
 #df_new.iloc[0][2:-1].tolist()
 
@@ -407,7 +406,7 @@ df_new.head()
 
 
 
-# In[128]:
+# In[ ]:
 
 
 #user_rating = df_new.rating.tolist()[:100]
@@ -423,52 +422,52 @@ df_new.head()
 
 
 
-# In[129]:
+# In[122]:
 
 entriesToRemove = ('userID','itemID','city','physical','director','movieCountry','movieLanguage','movieYear','genre1', 'genre2',
        'genre3', 'actor1', 'actor2', 'actor3','budget','rating')
 
 
-# In[130]:
+# In[123]:
 
 for k in entriesToRemove:
     new_size_of_feature.pop(k, None)
 
 
-# In[131]:
+# In[124]:
 
 for k,v in new_size_of_feature.items():
     print(v['length'])
 
 
-# In[132]:
+# In[125]:
 
 new_size_of_feature
 
 
-# In[133]:
+# In[129]:
 
 df.columns
 
 
-# In[134]:
+# In[130]:
 
 index_limit=[]
 for x in df.columns:
     index_limit.append(new_size_of_feature[x])
 
 
-# In[135]:
+# In[131]:
 
 index_limit = index_limit[2:-12]
 
 
-# In[136]:
+# In[132]:
 
 index_limit
 
 
-# In[137]:
+# In[133]:
 
 final_index_limit= []
 for i in range(len(index_limit)):
@@ -479,14 +478,14 @@ for i in range(len(index_limit)):
         pass
 
 
-# In[144]:
+# In[134]:
 
 final_index_limit, sum(final_index_limit)
 
 
 # ## Make the contstraint list
 
-# In[139]:
+# In[135]:
 
 from random import *
 randBinList = lambda n: [randint(0,1) for b in range(1,n+1)]
@@ -499,79 +498,103 @@ for index in final_index_limit:
     con_index=con_index + temp
 
 
-# In[140]:
+# In[136]:
 
 #con_index
+df_new.columns
 
 
 # # Pyswarm Implementation
 
-# In[141]:
+# In[137]:
 
 from pyswarm import pso
 import time
 from random import *
 
 
-# In[142]:
+# In[154]:
 
 start_time = time.time()
 #user_context = df_new.iloc[0][2:-1].tolist()
-user_rating = df_new.rating.tolist()[:50]
+user_rating = df_new.rating.tolist()[:20]
 def banana(x):
     lhs = 0.0
     square_error = 0.0
-    for i in range(50):
+    for i in range(20):
         user_context = df_new.iloc[i][2:-1].tolist()
-        for weight, context in zip(x, user_context):
-            lhs += weight * context
+        lhs = np.dot(x,user_context)
+#         for weight, context in zip(x, user_context):
+#             lhs += weight * context
         square_error += (user_rating[i] - lhs)**2
-    #equation = (user_rating**2 - equation**2)/user_rating**2
+    print(square_error)
     return square_error/2
 
 def con(x):
-    #randBinList = lambda n: [randint(0,1) for b in range(1,n+1)]
     con_index = []
-    #x = randBinList(178)
     final_index_limit = [21, 2, 4, 4, 3, 4, 3, 5, 7, 7, 7, 3, 2, 2]
+    start_index=0
+    con_index = []
     for index in final_index_limit:
         temp = []
-        temp.append(1 - sum(x[:index]))
+        temp.append(sum(x[start_index:start_index+index]) - 1)
         temp = temp*index
         con_index=con_index + temp
+        start_index = index
     return con_index
 
 lb = [0]*74
 ub = [1]*74
 
 xopt, fopt = pso(banana,lb, ub,f_ieqcons=con,swarmsize=740,maxiter=1000)
-print("--- %s seconds ---" % (time.time() - start_time)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
-# In[145]:
+# In[ ]:
 
 ##Rating
+fopt
 
 
 # In[ ]:
 
 print("----------------------Difference Between Ratings---------------------")
-for i in range(100):
+for i in range(10):
     rating = 0
     count = 0
-    original_rating = df_new.iloc[i][1]
-    for weight, context in zip(xopt,df_new.iloc[i][2:-1].tolist()):
-        rating += context*weight
-    print(str(original_rating - rating))
+    original_rating = df_new.iloc[i][-1]
+    predicted_rating = np.dot(xopt, df_new.iloc[i][2:-1].tolist())
+    print(predicted_rating, original_rating)
+    print(str(float(original_rating - original_rating)))
         
-
-
-# In[146]:
-
-
 
 
 # In[ ]:
 
+original_rating = [df_new.iloc[i][-1] for i in range(1000)]
+predicted_rating = [np.dot(xopt, df_new.iloc[i][2:-1].tolist()) for i in range(1000)]
+print("----------------------  RMSE VALUE IS  ---------------------")
+mean_squared_error(original_rating,predicted_rating)
 
 
+# In[ ]:
+
+#np.dot(x,y)
+
+
+# In[ ]:
+
+# x = [1]*78
+# final_index_limit = [21, 2, 4, 4, 3, 4, 3, 5, 7, 7, 7, 3, 2, 2]
+# start_index=0
+# con_index = []
+# for index in final_index_limit:
+#     temp = []
+#     temp.append(sum(x[start_index:start_index+index]) - 1)
+#     temp = temp*index
+#     con_index=con_index + temp
+#     start_index = index
+# return con_index
+
+
+# In[ ]:
