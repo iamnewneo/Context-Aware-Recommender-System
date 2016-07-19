@@ -644,9 +644,9 @@ objective = "minimization"
 firefly_algo = FireflyAlgorithm(minimize_weights_function_wrapper, number_of_variables, objective)
 
 
-number_of_fireflies = 100
-maximun_generation = 500
-randomization_parameter_alpha = 0.3
+number_of_fireflies = 740
+maximun_generation = 1000
+randomization_parameter_alpha = 0.2
 absorption_coefficient_gamma = 0.4
 
 result = firefly_algo.search(number_of_fireflies = number_of_fireflies, 
@@ -661,6 +661,6 @@ print(result["best_objective_function_value"])
 # In[ ]:
 
 with open("result.txt", "w") as myfile:
-    for key in sorted(d):
+    for key in sorted(result):
         myfile.write(key + "," + ",".join(d[key]) + "\n")
 
