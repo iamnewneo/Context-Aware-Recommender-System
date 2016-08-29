@@ -436,8 +436,8 @@ for k in entriesToRemove:
 
 # In[56]:
 
-for k,v in new_size_of_feature.items():
-    print(v['length'])
+#for k,v in new_size_of_feature.items():
+    #print(v['length'])
 
 
 # In[57]:
@@ -623,7 +623,8 @@ class MinimizeWeightsSumSquareError(AbstractWrapper):
             user_context = df_new.iloc[i][2:-1].tolist()
             lhs = np.dot(decision_variable_values,user_context)
             square_error += (user_rating[i] - lhs)**2
-        return square_error/2
+        print(square_error/2.0)
+        return square_error/2.0
 
     def initial_decision_variable_value_estimates(self):
         return [0.1]*74
@@ -634,6 +635,7 @@ class MinimizeWeightsSumSquareError(AbstractWrapper):
 import time
 from metaheuristic_algorithms.firefly_algorithm import FireflyAlgorithm
 start_time = time.time()
+print("------ Firefly Started ----")
 #from metaheuristic_algorithms.function_wrappers.rosenbrook_function_wrapper import RosenbrookFunctionWrapper
 #from metaheuristic_algorithms.function_wrappers.nonsmooth_multipeak_function_wrapper import NonsmoothMultipeakFunctionWrapper
 minimize_weights_function_wrapper = MinimizeWeightsSumSquareError()
@@ -644,10 +646,10 @@ objective = "minimization"
 firefly_algo = FireflyAlgorithm(minimize_weights_function_wrapper, number_of_variables, objective)
 
 
-number_of_fireflies = 740
-maximun_generation = 1000
+number_of_fireflies = 50
+maximun_generation = 200
 randomization_parameter_alpha = 0.2
-absorption_coefficient_gamma = 0.4
+absorption_coefficient_gamma = 1
 
 result = firefly_algo.search(number_of_fireflies = number_of_fireflies, 
                                maximun_generation = maximun_generation, 
@@ -662,5 +664,5 @@ print(result["best_objective_function_value"])
 
 with open("result.txt", "w") as myfile:
     for key in sorted(result):
-        myfile.write(key + "," + ",".join(d[key]) + "\n")
+        myfile.write(str(key) + "," + ",".join(result[key]) + "\n")
 
